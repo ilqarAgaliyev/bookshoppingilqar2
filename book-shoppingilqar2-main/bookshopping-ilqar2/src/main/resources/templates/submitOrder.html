@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<meta charset="utf-8">
+<title>Alıcı</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{/style/main.css}" type="text/css">
+<style>.basket-book-image{width:30px;}
+.fixeded{
+	position:fixed;
+	bottom:20px;
+	right: 20px;
+}
+#total-price{
+font-size: 24px;
+}
+.book{
+	width:200px;
+	height: 300px;
+	position: flex;
+	border: 1px solid red;
+	margin: 10px;
+}
+
+.book span{
+	 white-space: nowrap;
+    text-overflow: ellipsis;  
+    flex-shrink: 1;
+    overflow:hidden;
+    max-width: 100px;
+    width:auto;
+    display:block;
+}
+.main-content{
+	overflow: auto;
+    padding: 10px;
+    width:100%;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+}</style>
+</head>
+<body>
+<!-- HTML BEGIN -->
+<div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/}" method="post">
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+
+</div>
+<h1>Sizin sifarişiniz qəbul olundu!!! Bizi seçdiyiniz üçün təşəkkür edirik!!!</h1>
+<a class="btn btn-warning" href="/book-shopping/customer">Kitab alış-verişi səyfəsinə qeri dön</a>
+</body>
+</html>

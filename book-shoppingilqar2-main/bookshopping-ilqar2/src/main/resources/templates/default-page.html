@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <title>Hello Spring Security</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+    <body>
+    <div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/}" method="post">
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+<div style="height: 5px;"></div>
+</div>
+<div class="container">
+<h1>Kitab alış-verişi saytımıza xoş gəlmisiniz</h1>
+        <form th:action="@{/book-shopping/customer}">
+        	<input class="btn btn-warning" type="submit" value="Kitab alış-verişinə başla"/>
+        </form>
+        <div style="height: 5px;"></div>
+        <form th:action="@{/book-shopping/customLogin}">
+        	<input class="btn btn-success" type="submit" value="Giriş"/>
+        </form>
+</div>
+        <h1></h1>
+        <br><br>
+
+    </body>
+</html>

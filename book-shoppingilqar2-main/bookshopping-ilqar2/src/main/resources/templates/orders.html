@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>#book-register-form{width:300px;margin:auto;}
+.error-message{color:red;}</style>
+</head>
+<body>
+<div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/}" method="post">
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+<div style="height: 5px;"></div>
+</div>
+<form th:action="@{/book-shopping/new-order}" method="POST" id="book-register-form" enctype="multipart/form-data">
+
+<div id="inputsDiv" class="inputsDiv" th:each="basketBooks : ${basketBooks}">
+	<input type="number" style="display:none;" th:value="${basketBooks.bookId}" />
+	<input type="number" style="display:none;" th:value="${basketBooks.count}" />
+</div>
+
+	<input id="countofBooks" style="display:none;" name="countofbooks" type="number" value="0" />
+<div class="form-group"><label for="book-name">Ad: </label>
+<input type="text" class="form-control" id="book-name" name="name" value=""/>
+</div>
+
+<div class="form-group"><label for="book-description">Ünvan: </label>
+<textarea class="form-control" id="book-description" name="address"></textarea>
+</div>
+
+<div class="form-group"><label for="book-price">Telefon: </label>
+<input class="form-control" type="number" id="book-price" name="phone" value=""/>
+</div>
+
+<div class="form-group"><label for="book-author">Email: </label>
+<input class="form-control" id="book-author" name="email" value=""/>
+</div>
+
+<div class="form-group"><label for="book-page-count">Qeyd: </label>
+<input class="form-control" type="text" id="book-page-count" name="note" value=""/>
+</div>
+
+<input class="btn btn-success" type="submit" value="Yadda saxla" />
+
+</form>
+</body>
+<script>
+var inputs = document.getElementsByClassName("inputsDiv");
+document.getElementById("countofBooks").value = inputs.length;
+for(var i = 0; i<inputs.length; i++){
+	var inputsa = inputs[i].getElementsByTagName("input");
+	
+		inputsa[0].setAttribute("name","id"+(i+1));
+		inputsa[1].setAttribute("name","count"+(i+1));
+}
+</script>
+</html>

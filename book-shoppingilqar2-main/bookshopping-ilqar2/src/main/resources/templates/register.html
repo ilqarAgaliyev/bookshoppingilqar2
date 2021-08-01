@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <title>Hello Spring Security</title>
+        <meta charset="utf-8" />
+        
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+<div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/}" method="post">
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+<div style="height: 5px;"></div>
+</div>
+<h1 style="text-align: center;">Hesab yaratmaq</h1>
+<div style="width: 300px;margin: auto;">
+<form th:action="@{/book-shopping/redirectToCus}" method="post" class="form">
+<div class="form-group">
+<label for="username">İstifadəçi adı</label>
+<input class="form-control" type="text" id="username" name="username" placeholder="İstifadəçi adı" />
+</div>
+<div class="form-group">
+<label for="password">Şifrə</label>
+<input class="form-control" type="password" id="password" name="password" placeholder="Şifrə" />
+</div>
+	<button  type="submit" class="btn btn-primary" >Hesab yarat</button>
+</form>
+</div>
+</body>
+</html>

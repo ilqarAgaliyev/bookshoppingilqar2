@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8">
+<title>Yeni kitab</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>#book-register-form{width:300px;margin:auto;}
+.error-message{color:red;}</style>
+</head>
+<body>
+<div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/home}" method="post">
+<input style="display:none;" name="username" th:value="${theUser.username}"/>
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+<div style="height: 5px;"></div>
+</div>
+<h1 style="text-align: center;color: green;">Yeni kitab</h1>
+
+<form th:action="@{/book-shopping/books/new}"  th:modelAttribute="theBook" method="POST" id="book-register-form" enctype="multipart/form-data">
+
+
+
+<div class="form-group"><label for="book-name">Ad: </label>
+<input class="form-control" id="book-name" name="name" value=""/>
+</div>
+
+<div class="form-group"><label for="book-description">Təsvir: </label>
+<textarea class="form-control" id="book-description" name="description"></textarea>
+</div>
+
+<div class="form-group"><label for="book-price">Qiymət: </label>
+<input class="form-control" type="number" id="book-price" name="price" value=""/>
+</div>
+
+<div class="form-group"><label for="book-author">Müəllif: </label>
+<input class="form-control" id="book-author" name="author" value=""/>
+</div>
+
+<div class="form-group"><label for="book-page-count">Səhifə sayı: </label>
+<input class="form-control" type="number" id="book-page-count" name="page_count" value=""/>
+</div>
+<input style="display:none;" name="username" th:value="${theUser.username}"/>
+
+<div class="form-group">
+<label for="book-image">Şəkil: </label>
+<input class="form-control" type="file" id="book-image"
+name="imageFile" multiple onchange="showname()" accept="image/x-png,image/jpeg,image/jpg"/>
+<input style="display:none;" class="form-control" id="book-images" name="image" value=""/>
+</div>
+
+<input class="btn btn-success" type="submit" value="Yadda saxla" />
+
+</form>
+<a href="/book-shopping-ajax/books">Kitabların siyahısı</a>
+<script type="text/javascript">
+function showname () {
+    var name = document.getElementById('book-image'); 
+    document.getElementById('book-images').value = name.files.item(0).name;
+  };
+</script>
+</body>
+</html>

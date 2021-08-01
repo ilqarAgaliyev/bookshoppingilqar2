@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<meta charset="utf-8">
+<title>Alıcı</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{style/style.css}" type="text/css">
+<style type="text/css">
+
+.hideInput{
+display:none;
+}
+.basket-book-image{width:30px;}
+.fixeded{
+	position:fixed;
+	bottom:20px;
+	right: 20px;
+}
+#total-price{
+font-size: 24px;
+}
+.book{
+	width:200px;
+	height: 300px;
+	position: flex;
+	border: 1px solid red;
+	margin: 10px;
+}
+
+.book span{
+	 white-space: nowrap;
+    text-overflow: ellipsis;  
+    flex-shrink: 1;
+    overflow:hidden;
+    max-width: 100px;
+    width:auto;
+    display:block;
+}
+.main-content{
+	overflow: auto;
+    padding: 10px;
+    width:100%;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+}
+</style>
+</head>
+<body>
+<!-- HTML BEGIN -->
+<div>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item"><form th:action="@{/book-shopping/}" method="post">
+<input style="outline: none; background-color: none; color:rgb(77, 77, 77);" class="nav-link"  type="submit" value="Əsas səhifə"/></form></li>
+
+
+
+</ul>
+<ul class="navbar-nav navbar-collapse justify-content-end">
+
+
+</ul>
+</nav>
+<div style="height: 5px;"></div>
+</div>
+<div id="main-content" class="main-content">
+	<div class="book-container" th:each="theBook : ${books}">
+		<div class='book' style="display:none;"  th:attr="id=|${theBook.id}|">
+			<span id="book-image" th:attr="style=|background-image:url(/book-shopping/files/${theBook.image})|"></span>
+			<span class='book-name' id="book-name" th:text="${theBook.name}"></span>
+			<span class='book-image' th:text="${theBook.image}"></span>
+			<span class='book-price' id="book-price" th:text="${theBook.price}"></span>
+			<span class='book-description' id="book-description" th:text="${theBook.description}"></span>
+			<span class='book-author' id="book-author" th:text="${theBook.author}"></span>
+			<span class='book-page_count' id="book-page_count" th:text="${theBook.page_count}"></span>
+			<span style="display:none;" id="booksId" class="booksId" th:text="${theBook.id}"></span>
+			<input class='btn btn-primary' type="button" th:attr="onclick=|addToBasket('${theBook.id}')|" value="Səbətə at"/>
+			
+		</div> 
+	</div>
+</div>
+<div class="fixeded">
+<button type="button" data-toggle="modal" data-target="#basketModal" onclick=""
+id='open-basket-btn' class='btn btn-primary'>Səbət 
+<span class='badge badge-light' id="basket-book-count">0</span></button>
+<input id='search' class='form-control' placeholder='Axtarış' oninput='searchBooks()'/>
+</div>
+<div class="modal fade" id="basketModal">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h1 class="modal-title">Səbət</h1>
+<button type="button" class="close" data-dismiss="modal">x</button>
+</div>
+<form th:action="@{/book-shopping/confirm-order}" method="POST">
+<div class="modal-body">
+
+<table class="table table-hover table-bordered">
+<thead><tr><th>ID</th><th>Şəkil</th><th>Ad</th><th>Qiymət</th><th>Miqdar</th><th>Ümumi qiymət</th><th>Əməliyyat</th></tr></thead>
+<tbody id="basket-books-table">
+	<input type="number" style="display:none;" id="basketbookcount" name="countofbooks" value="0"/>
+</tbody>
+</table>
+<span id="umum"></span> <span id="total-price"></span><span id="azn"></span>
+
+</div>
+<div class="modal-footer">
+<button type="submit"  class="btn btn-success" id="confirm-order-btn">Sifarişi təstiqlə</button>
+<button type="button" class="btn btn-danger" data-dismiss="modal">Bağla</button>
+</div>
+</form>
+
+</div></div></div>
+<!-- HTML END -->
+<script>
+// JAVASCRIPT BEGIN
+// REFRESH BEGIN
+
+//REFRESH END
+// FUNCTIONS BEGIN
+var umum = document.getElementById("umum");
+umum.innerHTML = "Ümumi Qiymet: ";
+var azn = document.getElementById("azn");
+azn.innerHTML = "AZN";
+function addToBasket(bookId){
+	var book = document.getElementById(bookId);
+	var name = book.getElementsByClassName('book-name');
+	var image = book.getElementsByClassName('book-image');
+	var price = book.getElementsByClassName('book-price');
+	fillBasketTable(bookId,image[0].innerHTML,name[0].innerHTML,price[0].innerHTML);
+	calculateBookPrice();
+}
+function openBasket(){
+	fillBasketTable();
+	if(basketBooks.length==0){
+		document.getElementById('confirm-order-btn').style.display='none';
+	}else{
+		document.getElementById('confirm-order-btn').style.display='block';
+	}
+}
+
+
+function fillBasketTable(id,image,name,price) {
+    var countofBooks= document.getElementById("basket-book-count");
+    var countofBooksintable= document.getElementById("basketbookcount");
+    countofBooks.innerHTML = Number.parseInt(countofBooks.innerHTML)+1;
+    countofBooksintable.value = countofBooks.innerHTML;
+    var tr = document.createElement("tr");
+    tr.id = "tr"+id;
+    var tdId = document.createElement("td");
+    var inpforId = document.createElement("input");
+    inpforId.type = "number";
+    inpforId.className="hideInput";
+    inpforId.setAttribute("name","id");
+    tdId.className = "id";
+    var text = document.createTextNode(id);
+    tdId.appendChild(text);
+    inpforId.setAttribute("value",id);
+    var img = document.createElement("img");
+    img.className = "img"
+    img.src = image;
+    var tdName = document.createElement("td");
+    tdName.className = "name"
+    var text = document.createTextNode(name);
+    tdName.appendChild(text);
+    var tdPrice = document.createElement("td");
+    tdPrice.className = "price";
+    var text = document.createTextNode(price);
+    tdPrice.appendChild(text);
+    var tdMiqdar = document.createElement("input");
+    tdMiqdar.id = id+"a"+price;
+    tdMiqdar.type = "number";
+    tdMiqdar.min="1";
+    tdMiqdar.max="10000"
+    tdMiqdar.value = "1"
+    tdMiqdar.setAttribute( "onchange", "totalPriceOfBook("+id+","+price+")");
+    tdMiqdar.setAttribute("name","count");
+    tdMiqdar.setAttribute("style","margin-left:17px;margin-top:10px;");
+    var tdTotal = document.createElement("td");
+    tdTotal.id=id+"a";
+    tdTotal.className = "totalPrice";
+    var a = Number.parseInt(price);
+    var b = Number.parseInt(tdMiqdar.value);
+    var text = document.createTextNode(a*b);
+    tdTotal.appendChild(text);
+    var deleteBtn = document.createElement("button");
+    deleteBtn.type="button";
+    deleteBtn.className="btn btn-danger"
+    deleteBtn.setAttribute("style","margin-left:32px;margin-bottom:5px;");
+    deleteBtn.setAttribute( "onclick", "deleteBookOfBasketBook("+id+","+price+")");
+    var text = document.createTextNode("Sil");
+    deleteBtn.appendChild(text);
+    var element = document.getElementById("basket-books-table");
+   element.appendChild(tr);
+    tr.appendChild(tdId);
+    tr.appendChild(img);
+    tr.appendChild(tdName);
+    tr.appendChild(tdPrice);
+    tr.appendChild(tdMiqdar);
+    tr.appendChild(tdTotal);
+    tr.appendChild(inpforId);
+    tr.appendChild(deleteBtn);
+    
+    }
+    function deleteBookOfBasketBook(id,price){
+    	var tr = document.getElementById("tr"+id);
+    	var count = document.getElementById(id+"a"+price);
+        var countofBooks= document.getElementById("basket-book-count");
+        var countofBooksintable= document.getElementById("basketbookcount");
+        var total = document.getElementById("total-price");
+    	tr.parentNode.removeChild(tr);
+    	total.innerHTML = Number.parseInt(total.innerHTML)-(Number.parseInt(count.value)*Number.parseInt(price));
+    	countofBooks.innerHTML = Number.parseInt(countofBooks.innerHTML)-1;
+    	countofBooksintable.value = Number.parseInt(countofBooksintable.value)-1;
+    	console.log(Number.parseInt(countofBooksintable.value));
+    }
+    function totalPriceOfBook(id,price){
+    	var count = document.getElementById(id+"a"+price);
+    	var totalPriceOfBook = document.getElementById(id+"a");
+    	totalPriceOfBook.innerHTML = Number.parseInt(count.value)*Number.parseInt(price);
+    	calculateBookPrice();
+    }
+	function calculateBookPrice(){
+		var booksPrices=document.getElementsByClassName("totalPrice");
+		var total = document.getElementById("total-price");
+		var a = 0;
+		for (var index = 0; index < booksPrices.length; index++) {
+			a+=Number.parseInt(booksPrices[index].innerHTML);
+	    }
+		total.innerHTML=a;
+	}
+
+function searchBooks() {
+    var search = document.getElementById("search").value.toLowerCase();
+    var books = document.getElementsByClassName("book");
+    
+    	
+    for(var i = 0; i < books.length; i++){
+    	var span = books[i].getElementsByTagName("span");
+    	for (var j = 0; j < span.length; j++) {
+            if (span[j].innerHTML.toLowerCase().includes(search)) {
+                books[i].style.display="revert"
+                break;
+            }else{
+                books[i].style.display="none"
+            
+        }
+    }
+    
+        
+    
+}}
+var booksBegin = 20;
+var books = document.getElementsByClassName("book");
+for(var i = 0; i<booksBegin; i++){
+          books[i].style.display="revert"      
+}
+
+var counter=0;
+var allowScroll=true;
+function onScroll(){
+	if(allowScroll){
+		
+	const distanceToBottom = document.body.getBoundingClientRect().bottom;
+	const documentHeight=document.documentElement.clientHeight;
+	
+	if (distanceToBottom < documentHeight + 150) {
+		allowScroll=false;
+		counter++;
+		console.log('onScroll : '+counter);
+
+		
+		for(var i = booksBegin; i<booksBegin+20; i++){
+	          books[i].style.display="revert"      
+		}
+		booksBegin+=20;
+		setTimeout(function(){allowScroll=true;},1000);
+		
+	}
+	}
+	
+	
+	
+	}
+	window.addEventListener("scroll",onScroll);
+
+	
+	
+//FUNCTIONS END
+//JAVASCRIPT END
+</script>
+</body>
+</html>

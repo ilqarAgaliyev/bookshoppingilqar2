@@ -1,0 +1,16 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<form th:action="@{/book-shopping/register}" method="post">
+<input id="clickButton" style="display:none;" class="btn btn-primary" type="submit" value="Kitabların siyahısı"/>
+</form>
+<script type="text/javascript">
+function onLoadFunctions() {
+	
+	    var button = document.getElementById('clickButton');
+	    button.form.submit();
+	   
+  }
+  window.onload = onLoadFunctions;
+  </script>
+</body>
+</html>
